@@ -35,6 +35,8 @@ namespace BooksList
             // Language display initialization
             InitializeLanguage();
 
+            RootFrame.UriMapper = this.Resources["UriMapper"] as UriMapper;
+
             // Show graphics profiling information while debugging.
             if (Debugger.IsAttached)
             {

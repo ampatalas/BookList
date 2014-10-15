@@ -15,7 +15,7 @@ namespace BooksList
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        private BookViewModel vm;
+        public static BookViewModel vm;
         
         public MainPage()
         {
@@ -44,8 +44,8 @@ namespace BooksList
         }
         private void ClickEdit(object sender, EventArgs e)
         {
-            //PhoneApplicationService.Current.State["EditedItem"] = booksListBinding.SelectedItem as Book;
-            //this.NavigationService.Navigate(new Uri("/EditItem", UriKind.Relative));
+            PhoneApplicationService.Current.State["EditedItem"] = booksListBinding.SelectedItem as Book;
+            this.NavigationService.Navigate(new Uri("/EditItem", UriKind.Relative));
         }
 
         private void booksListBinding_GotFocus(object sender, RoutedEventArgs e)

@@ -14,7 +14,17 @@
             <nav:UriMapping MappedUri="/AddingPage.xaml" Uri="/AddItem" />
             <nav:UriMapping MappedUri="/AddingPage.xaml?editmode=true" Uri="/EditItem" />
         </nav:UriMapper>
-        
+
+        <Style x:Key="AddingPageTextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontFamily" Value="Segoe WP"/>
+            <Setter Property="FontWeight" Value="Thin"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0, 0, 15, 0"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+        </Style>
+
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

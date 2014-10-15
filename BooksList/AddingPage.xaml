@@ -22,14 +22,20 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="myBooks" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Text="add a book" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-
-        </Grid>
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" BindingValidationError="ContentPanel_BindingValidationError">
+            <TextBlock Style="{StaticResource AddingPageTextBlockStyle}" Text="Book title:"/>
+            <TextBox Name="BookTitle" Text="{Binding Path=Title, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" HorizontalAlignment="Center" Width="456" />
+            <TextBlock Style="{StaticResource AddingPageTextBlockStyle}" Text="Book author:"/>
+            <TextBox Name="BookAuthor" Text="{Binding Path=AuthorName, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" HorizontalAlignment="Center" Width="456" />
+            <TextBlock Style="{StaticResource AddingPageTextBlockStyle}" Text="Publishing year:"/>
+            <TextBox Name="BookYear" Text="{Binding Path=PublishYear, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" HorizontalAlignment="Center" Width="456" InputScope="Number" />
+            <Button Name="PhotoChooserButton" Content="Add cover image" Margin="0" Click="AddCoverClick"/>
+            <Button Content="Save" Margin="60, 20, 60, 0" Click="AddItemClick"/>
+        </StackPanel>
     </Grid>
 
 </phone:PhoneApplicationPage>
