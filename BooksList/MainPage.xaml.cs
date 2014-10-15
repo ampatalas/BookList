@@ -8,34 +8,54 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using BooksList.Resources;
+using BooksList.ViewModel;
+using BooksList.Model;
 
 namespace BooksList
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        // Constructor
+        private BookViewModel vm;
+        
         public MainPage()
         {
             InitializeComponent();
-
-            // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
+            vm = new BookViewModel();
+            booksListBinding.DataContext = vm.BookItems;
         }
 
-        // Sample code for building a localized ApplicationBar
-        //private void BuildLocalizedApplicationBar()
-        //{
-        //    // Set the page's ApplicationBar to a new instance of ApplicationBar.
-        //    ApplicationBar = new ApplicationBar();
+        private void ClickAdd(object sender, EventArgs e)
+        {
+            this.NavigationService.Navigate(new Uri("/AddItem", UriKind.Relative));
+        }
 
-        //    // Create a new button and set the text value to the localized string from AppResources.
-        //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-        //    appBarButton.Text = AppResources.AppBarButtonText;
-        //    ApplicationBar.Buttons.Add(appBarButton);
+        private void ClickRemove(object sender, EventArgs e)
+        {
+            if (booksListBinding.SelectedItem == null) MessageBox.Show("No item is selected.", "Deleting items", MessageBoxButton.OK);
+            else
+            {
+                Book toDelete = vm.BookItems[booksListBinding.SelectedIndex];
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete " + toDelete.Title + "?", "Deleting items", MessageBoxButton.OKCancel);
+                if (result == MessageBoxResult.OK)
+                {
+                    vm.BookItems.RemoveAt(booksListBinding.SelectedIndex);
+                }
+            }
+        }
+        private void ClickEdit(object sender, EventArgs e)
+        {
+            //PhoneApplicationService.Current.State["EditedItem"] = booksListBinding.SelectedItem as Book;
+            //this.NavigationService.Navigate(new Uri("/EditItem", UriKind.Relative));
+        }
 
-        //    // Create a new menu item with the localized string from AppResources.
-        //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-        //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-        //}
+        private void booksListBinding_GotFocus(object sender, RoutedEventArgs e)
+        {
+            ApplicationBarIconButton editButton = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
+            ApplicationBarIconButton deleteButton = (ApplicationBarIconButton)ApplicationBar.Buttons[2];
+
+            editButton.IsEnabled = true;
+            deleteButton.IsEnabled = true;
+        }
+       
     }
 }
