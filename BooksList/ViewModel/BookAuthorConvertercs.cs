@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BooksList.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace BooksList.ViewModel
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return "Author: \n" + value.ToString();
+            return AppResources.BookListAuthor + "\n" + value.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

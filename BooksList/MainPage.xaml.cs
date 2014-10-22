@@ -20,8 +20,20 @@ namespace BooksList
         public MainPage()
         {
             InitializeComponent();
+            setUpMenuBar();
             vm = new BookViewModel();
-            booksListBinding.DataContext = vm.BookItems;
+            booksListBinding.DataContext = BookViewModel.BookItems;
+        }
+
+        private void setUpMenuBar()
+        {
+            ApplicationBarIconButton addButton = (ApplicationBarIconButton)ApplicationBar.Buttons[0];
+            ApplicationBarIconButton editButton = (ApplicationBarIconButton)ApplicationBar.Buttons[1];
+            ApplicationBarIconButton deleteButton = (ApplicationBarIconButton)ApplicationBar.Buttons[2];
+
+            addButton.Text = AppResources.MenuBarAdd;
+            editButton.Text = AppResources.MenuBarEdit;
+            deleteButton.Text = AppResources.MenuBarDelete;
         }
 
         private void ClickAdd(object sender, EventArgs e)
@@ -31,20 +43,20 @@ namespace BooksList
 
         private void ClickRemove(object sender, EventArgs e)
         {
-            if (booksListBinding.SelectedItem == null) MessageBox.Show("No item is selected.", "Deleting items", MessageBoxButton.OK);
+            if (booksListBinding.SelectedItem == null) MessageBox.Show(AppResources.DeletingItemsNoObject, AppResources.DeletingItemsTitle, MessageBoxButton.OK);
             else
             {
-                Book toDelete = vm.BookItems[booksListBinding.SelectedIndex];
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete " + toDelete.Title + "?", "Deleting items", MessageBoxButton.OKCancel);
+                Book toDelete = BookViewModel.BookItems[booksListBinding.SelectedIndex];
+                MessageBoxResult result = MessageBox.Show(AppResources.DeletingItemsWarning + toDelete.Title + "?", AppResources.DeletingItemsTitle, MessageBoxButton.OKCancel);
                 if (result == MessageBoxResult.OK)
                 {
-                    vm.BookItems.RemoveAt(booksListBinding.SelectedIndex);
+                    BookViewModel.BookItems.RemoveAt(booksListBinding.SelectedIndex);
                 }
             }
         }
         private void ClickEdit(object sender, EventArgs e)
         {
-            PhoneApplicationService.Current.State["EditedItem"] = booksListBinding.SelectedItem as Book;
+            PhoneApplicationService.Current.State["Book"] = booksListBinding.SelectedItem as Book;
             this.NavigationService.Navigate(new Uri("/EditItem", UriKind.Relative));
         }
 

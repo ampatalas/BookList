@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:src="clr-namespace:BooksList"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -22,20 +23,25 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="myBooks" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="add a book" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="AddingPageTitle" Text="{Binding Path=LocalizedResources.AddNewPositionTitle, Source={StaticResource LocalizedStrings}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" BindingValidationError="ContentPanel_BindingValidationError">
-            <TextBlock Style="{StaticResource AddingPageTextBlockStyle}" Text="Book title:"/>
+        <!--<StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" BindingValidationError="ContentPanel_BindingValidationError">
+            <TextBlock Style="{StaticResource AddingPageTextBlockStyle}" Text="{Binding Path=LocalizedResources.AddTitle, Source={StaticResource LocalizedStrings}}"/>
             <TextBox Name="BookTitle" Text="{Binding Path=Title, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" HorizontalAlignment="Center" Width="456" />
-            <TextBlock Style="{StaticResource AddingPageTextBlockStyle}" Text="Book author:"/>
+            <TextBlock Style="{StaticResource AddingPageTextBlockStyle}" Text="{Binding Path=LocalizedResources.AddAuthor, Source={StaticResource LocalizedStrings}}"/>
             <TextBox Name="BookAuthor" Text="{Binding Path=AuthorName, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" HorizontalAlignment="Center" Width="456" />
-            <TextBlock Style="{StaticResource AddingPageTextBlockStyle}" Text="Publishing year:"/>
+            <TextBlock Style="{StaticResource AddingPageTextBlockStyle}" Text="{Binding Path=LocalizedResources.AddYear, Source={StaticResource LocalizedStrings}}"/>
             <TextBox Name="BookYear" Text="{Binding Path=PublishYear, Mode=TwoWay, ValidatesOnExceptions=True, NotifyOnValidationError=True}" HorizontalAlignment="Center" Width="456" InputScope="Number" />
-            <Button Name="PhotoChooserButton" Content="Add cover image" Margin="0" Click="AddCoverClick"/>
-            <Button Content="Save" Margin="60, 20, 60, 0" Click="AddItemClick"/>
+            <Button Name="PhotoChooserButton" Content="{Binding Path=LocalizedResources.AddCoverImg, Source={StaticResource LocalizedStrings}}" Margin="0" Click="AddCoverClick"/>
+            <Button Content="{Binding Path=LocalizedResources.AddSave, Source={StaticResource LocalizedStrings}}" Margin="60, 20, 60, 0" Click="AddItemClick"/>
+        </StackPanel>-->
+
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="15,0,15,0">
+            <src:SaveButtonControl x:Name="SaveControl" />
         </StackPanel>
+
     </Grid>
 
 </phone:PhoneApplicationPage>

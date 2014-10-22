@@ -10,102 +10,51 @@ using Microsoft.Phone.Shell;
 using BooksList.Model;
 using Microsoft.Phone.Tasks;
 using System.Windows.Media.Imaging;
+using BooksList.Resources;
+using BooksList.ViewModel;
 
 namespace BooksList
 {
     public partial class AddingPage : PhoneApplicationPage
     {
 
-        private Book book;
         private bool editMode;
-        private bool comingFromChooser;
-
-        PhotoChooserTask photoChooserTask;
 
         public AddingPage()
         {
             InitializeComponent();
-            this.photoChooserTask = new PhotoChooserTask();
-            this.photoChooserTask.Completed += new EventHandler<PhotoResult>(photoChooserTask_Completed); 
-        }
-
-        private void photoChooserTask_Completed(object sender, PhotoResult e)
-        {
-            if (e != null)
-            {
-                BitmapImage image = new BitmapImage();
-                image.SetSource(e.ChosenPhoto);
-                book.Cover = image;
-                PhotoChooserButton.Content = e.OriginalFileName;
-            }
+            SaveControl.SaveEvent += new EventHandler(this.LeavePage);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            if (comingFromChooser)
-            {
-
-            }
-            else
+            if (!e.NavigationMode.Equals(NavigationMode.Back))
             {
                 if (this.NavigationContext.QueryString.ContainsKey("editmode"))
                 {
                     editMode = Boolean.Parse(this.NavigationContext.QueryString["editmode"]);
                     if (editMode)
                     {
-                        book = PhoneApplicationService.Current.State["EditedItem"] as Book;
+                        SaveControl.editMode = true;
+                        AddingPageTitle.Text = AppResources.AddEditPositionTitle;
+                        SaveControl.BindingBook = PhoneApplicationService.Current.State["Book"] as Book;
                     }
                 }
-                else
-                {
-                    book = new Book("", "", 0);
-                    editMode = false;
-                }
-                setUpView(book);
             }
         }
 
-        private void setUpView(Book item)
+        public void LeavePage (object sender, EventArgs args)
         {
-            BookTitle.DataContext = item;
-            BookAuthor.DataContext = item;
-            BookYear.DataContext = item;
-        }
-
-        private void ContentPanel_BindingValidationError(object sender, ValidationErrorEventArgs e)
-        {
-            if (e.Action == ValidationErrorEventAction.Added)
+            SaveButtonControl senderControl = (SaveButtonControl) sender;
+            if (senderControl.Leaving)
             {
-                MessageBox.Show(e.Error.ErrorContent.ToString());
-            }
-        }
-
-        private void AddItemClick(object sender, RoutedEventArgs e)
-        {
-            int year = (int)Double.Parse(BookYear.Text);
-            if (!String.IsNullOrWhiteSpace(BookTitle.Text) && !String.IsNullOrWhiteSpace(BookAuthor.Text) && year > 0)
-            {
-                book.Title = BookTitle.Text;
-                book.AuthorName = BookAuthor.Text;
-                book.PublishYear = year;
-                if (!editMode) MainPage.vm.BookItems.Add(book);
-
+                if (!editMode) ViewModel.BookViewModel.BookItems.Add(SaveControl.BindingBook);
                 if (NavigationService.CanGoBack)
                 {
                     NavigationService.GoBack();
                 }
             }
-            else
-            {
-                MessageBox.Show("You didn't put some of the information.");
-            }
-        }
-
-        private void AddCoverClick(object sender, RoutedEventArgs e)
-        {
-            comingFromChooser = true;
-            photoChooserTask.Show(); 
         }
     }
 }
